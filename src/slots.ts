@@ -1,9 +1,9 @@
 // tslint:disable-next-line:no-namespace
 export enum TopicId {
+    animals = 'ANIMALS',
     family = 'FAMILY',
-    work = 'WORK',
-    jokes = 'JOKES',
-    animals = 'ANIMALS'
+    words = 'WORDS',
+    work = 'WORK'
 }
 
 export function allTopics(): string[] {
