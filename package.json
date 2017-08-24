@@ -1,0 +1,25 @@
+{
+  "name": "grandpa-george",
+  "version": "1.0.0",
+  "description": "The George Schwartz Lexicon Alexa Skill",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "alexa-sdk": "^1.0.12",
+    "aws-lambda-typescript": "0.0.15",
+    "deep-freeze": "0.0.1",
+    "shuffle-array": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/alexa-sdk": "^1.1.0"
+  },
+  "readme": "README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robertbullen/lexicon.git"
+  }
+}
