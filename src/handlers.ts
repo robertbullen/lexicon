@@ -4,7 +4,7 @@ import {Phrase}                 from './phrases';
 import {allTopics,
         TopicId}                from './slots';
 import {addPrologueAndEpilogue,
-        getOkayVariation}       from './variations';
+        randomOkayVariation}       from './variations';
 
 export const handlers: alexa.Handlers = {
     'LaunchRequest'(this: alexa.Handler): void {
@@ -16,7 +16,7 @@ export const handlers: alexa.Handlers = {
     },
 
     'AMAZON.CancelIntent'(this: alexa.Handler): void {
-        this.emit(':tell', getOkayVariation());
+        this.emit(':tell', randomOkayVariation());
     },
 
     'AMAZON.HelpIntent'(this: alexa.Handler): void {
@@ -27,7 +27,7 @@ export const handlers: alexa.Handlers = {
     },
 
     'AMAZON.StopIntent'(this: alexa.Handler): void {
-        this.emit(':tell', getOkayVariation());
+        this.emit(':tell', randomOkayVariation());
     },
 
     'GetPhraseAtRandomIntent'(this: alexa.Handler): void {
@@ -51,7 +51,7 @@ export const handlers: alexa.Handlers = {
         this.emit(':tell', text);
     },
 
-    'GetTopicsIntent'(this: alexa.Handler): void {
+    'GetTopicsListIntent'(this: alexa.Handler): void {
         console.log('GetTopicsIntent');
         const topics: string[] = allTopics();
         topics[topics.length - 1] = `and ${topics[topics.length - 1]}`;

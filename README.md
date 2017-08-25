@@ -2,7 +2,8 @@
 
 ## TODOs
 
-* Add "with explanation" intents
+* Favor phrases containing the actual spoken word (or variations of it)
+* Add "with/without explanation" intents
 * Add more utterances that include "find" and "what George would say"
 * Add typings for slot resolutions. Here's an example:
 

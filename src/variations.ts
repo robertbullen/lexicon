@@ -4,8 +4,7 @@ import * as shuffleArray from 'shuffle-array';
 const georgeVariations: ReadonlyArray<string> = deepFreeze([
     'George',
     'Grandpa',
-    'Grandpa George',
-    'He'
+    'Grandpa George'
 ]);
 
 const saidVariations: ReadonlyArray<string> = deepFreeze([
@@ -34,14 +33,18 @@ const okayVariations: ReadonlyArray<string> = deepFreeze([
     'Your wish is my command.'
 ]);
 
+export function randomGeorgeVariation(): string {
+    return shuffleArray.pick(georgeVariations);
+}
+
 export function addPrologueAndEpilogue(text: string): string {
-    let response: string = `${shuffleArray.pick(georgeVariations)} ${shuffleArray.pick(saidVariations)}, ${text}`;
+    let response: string = `${randomGeorgeVariation()} ${shuffleArray.pick(saidVariations)}, ${text}`;
     if (Math.random() <= 0.333) {
         response += ` ${shuffleArray.pick(commentaryVariations)}`;
     }
     return response;
 }
 
-export function getOkayVariation(): string {
+export function randomOkayVariation(): string {
     return shuffleArray.pick(okayVariations);
 }
