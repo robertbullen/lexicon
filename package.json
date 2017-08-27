@@ -9,13 +9,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "alexa-sdk": "^1.0.12",
-    "aws-lambda-typescript": "0.0.15",
-    "deep-freeze": "0.0.1",
-    "shuffle-array": "^1.0.1"
+    "alexa-sdk": "latest",
+    "aws-lambda-typescript": "latest",
+    "deep-freeze": "latest",
+    "shuffle-array": "latest"
   },
   "devDependencies": {
-    "@types/alexa-sdk": "^1.1.0"
+    "@types/alexa-sdk": "latest"
   },
   "readme": "README.md",
   "repository": {
