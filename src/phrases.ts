@@ -1,10 +1,10 @@
 import * as deepFreeze   from 'deep-freeze';
 import * as shuffleArray from 'shuffle-array';
 
-import {TopicId}               from './slots';
-import {randomGeorgeVariation} from './variations';
+import {TopicId}       from './topics';
+import * as variations from './variations';
 
-export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
+const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     {
         id: '37c38182-f3e7-4c43-9a04-f29247908af1',
         phrase: 'Having a kid is like buying a pig in a poke!',
@@ -55,19 +55,20 @@ export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     },
     {
         id: '2d06afa6-fd94-4708-bb58-b37c011d2350',
-        phrase: 'Bucky Beaver',
+        phrase: 'Bucky Beaver.',
         explanation: 'George used this term as a parody of the Bucky Badger mascot, played by Rebecca while she attended The University of Wisconsin Madison.',
         topicIds: [TopicId.animals, TopicId.family, TopicId.nicknames]
     },
     {
         id: '015d6a39-8b2c-4e44-942b-5c8471762652',
-        phrase: 'The Crow',
+        phrase: 'The Crow.',
         explanation: 'George used this term as a parody on the Osseo Oriole mascot, played by Rebecca while she attended Osseo Senior Highschool.',
         topicIds: [TopicId.animals, TopicId.family, TopicId.nicknames]
     },
     {
         id: '4fc945ed-03c1-4dd5-8fed-7933b630e556',
-        phrase: 'Nurse Cratched',
+        // TODO: SSML
+        phrase: 'Nurse Cratched.',
         explanation: 'This was George referring to any female family member currently providing his health care.',
         topicIds: [TopicId.family, TopicId.health, TopicId.nicknames]
     },
@@ -86,7 +87,7 @@ export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     {
         id: '336ad00a-980b-4eb7-a817-9e0baba58f79',
         phrase: 'We belong to a Mutual Admiration Society.',
-        explanation: 'George saying that he and another in the family love each other.',
+        explanation: 'This was George explaining that he and another in the family love each other.',
         topicIds: [TopicId.family]
     },
     {
@@ -110,7 +111,7 @@ export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     {
         id: '3bf98d1e-119f-4203-9f88-23e88e801af2',
         phrase: 'Black cow.',
-        explanation: 'Black cow is a slang term for root beer float.',
+        explanation: 'A black cow is a slang term for root beer float.',
         topicIds: [TopicId.animals, TopicId.food, TopicId.words]
     },
     {
@@ -128,12 +129,34 @@ export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     {
         id: '8a1d7586-f002-471f-8c43-4bd696c2eec0',
         phrase: 'Icebox.',
-        explanation: 'Icebox is an ice-cooled refrigerator.',
+        explanation: 'An icebox is an ice-cooled refrigerator.',
         topicIds: [TopicId.food, TopicId.words]
+    },
+    {
+        id: '8dce854c-aa56-4c1d-821b-eddccdc96fdd',
+        phrase: 'Semaphore.',
+        explanation: 'A semaphore is a traffic intersection with stoplights.',
+        topicIds: [TopicId.words]
+    },
+    {
+        id: '2b79b822-53a2-49f5-897f-46322cd24410',
+        phrase: 'Labation.',
+        explanation: 'A libation is an alcoholic beverage.',
+        topicIds: [TopicId.food, TopicId.words]
+    },
+    {
+        id: 'f8ea1549-b364-43bf-bd76-b56ad2b3c467',
+        phrase: 'Owly.',
+        explanation: 'Owly is an adjective that means irritated, out of sorts, or grumpy.',
+        topicIds: [TopicId.animals, TopicId.words]
+    },
+    {
+        id: '2a0b4696-c33f-4008-bc5f-4bfb05729faa',
+        phrase: 'Davenport.',
+        explanation: 'A davenport is a large sofa.',
+        topicIds: [TopicId.words]
     }
-
     /*
-,
     {
         id: '',
         phrase: '',
@@ -154,20 +177,34 @@ export interface Phrase {
     topicIds: TopicId[];
 }
 
-// tslint:disable-next-line:no-namespace
-export namespace Phrase {
-    export function selectOneAtRandom(): Readonly<Phrase> {
-        return shuffleArray.pick(phrases);
+export function getOneAtRandom(): Readonly<Phrase> {
+    return shuffleArray.pick(phrases);
+}
+
+export function getAllWithTopicIdOrThrow(topicId: TopicId, order: 'shuffled' | 'sorted'): Array<Readonly<Phrase>> {
+    const matchingPhrases: Array<Readonly<Phrase>> = phrases.filter((phrase: Phrase) => phrase.topicIds.indexOf(topicId) >= 0);
+
+    // If no phrases were found then the topic shouldn't exist.
+    if (matchingPhrases.length === 0) {
+        throw new Error(`No phrases were found under topic '${topicId}'`);
     }
 
-    export function selectAllMatchingTopicId(topicId: TopicId): Array<Readonly<Phrase>> {
-        return shuffleArray(phrases.filter((phrase: Phrase) => phrase.topicIds.indexOf(topicId) >= 0));
-    }
+    // Order the results, either randomizing them or sorting them by id (for the sake of consistency).
+    switch (order) {
+        case 'shuffled':
+            return shuffleArray(matchingPhrases);
 
-    export function generateResponseText(phrase: Phrase, explain: boolean): string {
-        const responseText: string = explain
-            ? `"${phrase.phrase}" ${phrase.explanation}`
-            : `"${phrase.phrase}"`;
-        return responseText.replace('George', randomGeorgeVariation);
+        case 'sorted':
+            return matchingPhrases.sort((a: Readonly<Phrase>, b: Readonly<Phrase>) => a.id.localeCompare(b.id));
+
+        default:
+            throw new Error(`Unsupported order '${order}'`);
     }
+}
+
+export function generateResponseText(phrase: Phrase, explain: boolean): string {
+    const responseText: string = explain
+        ? `"${phrase.phrase}" ${phrase.explanation}`
+        : `"${phrase.phrase}"`;
+    return responseText.replace(/George/g, variations.george());
 }

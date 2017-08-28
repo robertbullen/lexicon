@@ -7,6 +7,10 @@ const georgeVariations: ReadonlyArray<string> = deepFreeze([
     'Grandpa George'
 ]);
 
+export function george(): string {
+    return shuffleArray.pick(georgeVariations);
+}
+
 const saidVariations: ReadonlyArray<string> = deepFreeze([
     'used to say',
     'would say',
@@ -19,32 +23,52 @@ const saidVariations: ReadonlyArray<string> = deepFreeze([
 
 const commentaryVariations: ReadonlyArray<string> = deepFreeze([
     'What a card!',
-    'Grandpa, grandpa, grandpa.',
-    'That silly old man.',
+    // TODO: SSML
+    'Grandpa, grandpa, grandpa!',
+    'That silly old man!',
     'What a character!',
-    'He sure was a fountain of phrases.'
+    'He sure was a fountain of phrases!'
 ]);
-
-const okayVariations: ReadonlyArray<string> = deepFreeze([
-    'Okay.',
-    'No problem.',
-    'Will do.',
-    'You got it.',
-    'Your wish is my command.'
-]);
-
-export function randomGeorgeVariation(): string {
-    return shuffleArray.pick(georgeVariations);
-}
 
 export function addPrologueAndEpilogue(text: string): string {
-    let response: string = `${randomGeorgeVariation()} ${shuffleArray.pick(saidVariations)}, ${text}`;
+    let response: string = `${george()} ${shuffleArray.pick(saidVariations)}, ${text}`;
     if (Math.random() <= 0.333) {
         response += ` ${shuffleArray.pick(commentaryVariations)}`;
     }
     return response;
 }
 
-export function randomOkayVariation(): string {
+const okayVariations: ReadonlyArray<string> = deepFreeze([
+    'Okay.',
+    'No problem.',
+    'Will do.',
+    'You got it.',
+    'Your wish is my command.',
+    'Sure thing.'
+]);
+
+export function okay(): string {
     return shuffleArray.pick(okayVariations);
+}
+
+const sayingVariations: ReadonlyArray<string> = deepFreeze([
+    'phrase',
+    'saying'
+]);
+
+export function saying(): string {
+    return shuffleArray.pick(sayingVariations);
+}
+
+const sayingsVariations: ReadonlyArray<string> = deepFreeze([
+    'phrases',
+    'sayings'
+]);
+
+export function sayings(): string {
+    return shuffleArray.pick(sayingsVariations);
+}
+
+export function sayingOrSayings(count: number): string {
+    return count === 1 ? saying() : sayings();
 }

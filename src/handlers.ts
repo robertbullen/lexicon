@@ -1,61 +1,104 @@
 import * as alexa from 'alexa-sdk';
 
-import {Phrase}                 from './phrases';
-import {allTopics,
-        TopicId}                from './slots';
-import {addPrologueAndEpilogue,
-        randomOkayVariation}       from './variations';
+import * as phrases    from './phrases';
+import * as topics     from './topics';
+import * as utils      from './utils';
+import * as variations from './variations';
 
-export const handlers: alexa.Handlers = {
-    'LaunchRequest'(this: alexa.Handler): void {
-        this.emit(':tell', 'Welcome to The George Schwartz Lexicon.');
+export const handlers: alexa.Handlers<any> = {
+    'LaunchRequest'(this: alexa.Handler<any>): void {
+        const responseText: string = `
+            Welcome to The George Schwartz Lexicon, where ${variations.george()}'s ${variations.sayings()} are just a voice command away.
+            If you'd like instructions on how to use The Lexicon, simply say "Help." Otherwise, is there a ${variations.saying()} you're looking for?`;
+
+        console.log(responseText);
+        this.emit(':ask', responseText);
     },
 
-    'Unhandled'(this: alexa.Handler): void {
+    'Unhandled'(this: alexa.Handler<any>): void {
         this.emit('GetPhraseAtRandomIntent');
     },
 
-    'AMAZON.CancelIntent'(this: alexa.Handler): void {
-        this.emit(':tell', randomOkayVariation());
+    'AMAZON.CancelIntent'(this: alexa.Handler<any>): void {
+        const responseText: string = variations.okay();
+
+        console.log(responseText);
+        this.emit(':tell', responseText);
     },
 
-    'AMAZON.HelpIntent'(this: alexa.Handler): void {
-        this.emit(':tell', `
-            You can request a random phrase by saying, "Tell me a random saying.";
-            You can request phrases about specific topics, for example, "Find a phrase about work.";
-            For a list of topics, say, "List topics."`);
+    'AMAZON.HelpIntent'(this: alexa.Handler<any>): void {
+        const responseText: string = `
+            There are several ways to interact with The Lexicon. Here are some examples:
+            First, "Tell me a random ${variations.saying()}.";
+            Second, "Find a ${variations.saying()} about work.";
+            Third, "List all ${variations.sayings()} about food.";
+            Fourth, "List topics.";
+            To repeat these instructions, say, "Help".`;
+
+        console.log(responseText);
+        this.emit(':ask', responseText);
     },
 
-    'AMAZON.StopIntent'(this: alexa.Handler): void {
-        this.emit(':tell', randomOkayVariation());
+    'AMAZON.StopIntent'(this: alexa.Handler<any>): void {
+        const responseText: string = variations.okay();
+
+        console.log(responseText);
+        this.emit(':tell', responseText);
     },
 
-    'GetPhraseAtRandomIntent'(this: alexa.Handler): void {
-        console.log('GetPhraseAtRandomIntent');
-        const phrase: Phrase = Phrase.selectOneAtRandom();
-        let text: string = Phrase.generateResponseText(phrase, true);
-        text = addPrologueAndEpilogue(text);
-        this.emit(':tell', text);
+    'GetOnePhraseAtRandomIntent'(this: alexa.Handler<any>): void {
+        const phrase: phrases.Phrase = phrases.getOneAtRandom();
+
+        let responseText: string = phrases.generateResponseText(phrase, true);
+        responseText = variations.addPrologueAndEpilogue(responseText);
+
+        console.log(responseText);
+        this.emit(':tell', responseText);
     },
 
-    'GetPhraseByTopicIntent'(this: alexa.Handler): void {
-        console.log('GetPhraseByTopicIntent');
+    'GetOnePhraseByTopicIntent'(this: alexa.Handler<any>): void {
         const intentRequest = this.event.request as alexa.IntentRequest;
-        const topicSlot = intentRequest.intent.slots.topic;
-        const topicId: TopicId = (topicSlot as any).resolutions.resolutionsPerAuthority[0].values[0].value.id;
+        const topicSlot: alexa.SlotValue = topics.getSlotFromIntentRequestOrThrow(intentRequest);
+        const topicId: topics.TopicId | undefined = topics.getTopicIdFromSlot(topicSlot);
 
-        const phrases: Array<Readonly<Phrase>> = Phrase.selectAllMatchingTopicId(topicId);
-        const text: string = phrases.length > 0
-            ? addPrologueAndEpilogue(Phrase.generateResponseText(phrases[0], true))
-            : `I can't find any phrases in The Lexicon about "${topicSlot.value}"`;
-        this.emit(':tell', text);
+        let responseText: string;
+        if (topicId) {
+            const phrasesArray: Array<Readonly<phrases.Phrase>> = phrases.getAllWithTopicIdOrThrow(topicId, 'shuffled');
+            responseText = variations.addPrologueAndEpilogue(phrases.generateResponseText(phrasesArray[0], true));
+        } else {
+            responseText = generateUnrecognizedTopicResponseText(topicSlot);
+        }
+
+        console.log(responseText);
+        this.emit(':tell', responseText);
     },
 
-    'GetTopicsListIntent'(this: alexa.Handler): void {
-        console.log('GetTopicsIntent');
-        const topics: string[] = allTopics();
-        topics[topics.length - 1] = `and ${topics[topics.length - 1]}`;
-        const text: string = `Phrases in The Lexicon are categorized under the following topics: ${topics.join(', ')}`;
-        this.emit(':tell', text);
+    'GetAllPhrasesByTopicIntent'(this: alexa.Handler<any>): void {
+        const intentRequest = this.event.request as alexa.IntentRequest;
+        const topicSlot: alexa.SlotValue = topics.getSlotFromIntentRequestOrThrow(intentRequest);
+        const topicId: topics.TopicId | undefined = topics.getTopicIdFromSlot(topicSlot);
+
+        let responseText: string;
+        if (topicId) {
+            const phrasesArray: Array<Readonly<phrases.Phrase>> = phrases.getAllWithTopicIdOrThrow(topicId, 'sorted');
+            responseText = `I found ${phrasesArray.length} ${variations.sayingOrSayings(phrasesArray.length)} under the topic "${topics.getOneFriendlyText(topicId)}": `;
+            responseText += utils.generateListText(phrasesArray.map((phrase: phrases.Phrase) => phrases.generateResponseText(phrase, false)));
+        } else {
+            responseText = generateUnrecognizedTopicResponseText(topicSlot);
+        }
+
+        console.log(responseText);
+        this.emit(':tell', responseText);
+    },
+
+    'GetTopicsListIntent'(this: alexa.Handler<any>): void {
+        const responseText: string = `${variations.sayings()} in The Lexicon fall under the following topics: ${topics.getAllFriendlyTexts()}.`;
+
+        console.log(responseText);
+        this.emit(':tell', responseText);
     }
 };
+
+function generateUnrecognizedTopicResponseText(topicSlot: alexa.SlotValue): string {
+    return `I'm sorry, but I can't find any phrases in The Lexicon about "${topicSlot.value}".`;
+}
