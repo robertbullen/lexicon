@@ -51,7 +51,8 @@ export function okay(): string {
     return shuffleArray.pick(okayVariations);
 }
 
-const sayingVariations: ReadonlyArray<string> = deepFreeze([
+export const sayingVariations: ReadonlyArray<string> = deepFreeze([
+    'expression',
     'phrase',
     'saying'
 ]);
@@ -60,7 +61,8 @@ export function saying(): string {
     return shuffleArray.pick(sayingVariations);
 }
 
-const sayingsVariations: ReadonlyArray<string> = deepFreeze([
+export const sayingsVariations: ReadonlyArray<string> = deepFreeze([
+    'expressions',
     'phrases',
     'sayings'
 ]);

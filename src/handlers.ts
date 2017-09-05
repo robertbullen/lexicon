@@ -5,7 +5,22 @@ import * as topics     from './topics';
 import * as utils      from './utils';
 import * as variations from './variations';
 
-export const handlers: alexa.Handlers<any> = {
+interface RequiredHandlers {
+    'LaunchRequest'(this: alexa.Handler<any>): void;
+    'Unhandled'(this: alexa.Handler<any>): void;
+    'AMAZON.CancelIntent'(this: alexa.Handler<any>): void;
+    'AMAZON.HelpIntent'(this: alexa.Handler<any>): void;
+    'AMAZON.StopIntent'(this: alexa.Handler<any>): void;
+}
+
+export interface CustomHandlers {
+    'GetAllPhrasesByTopicIntent'(this: alexa.Handler<any>): void;
+    'GetOnePhraseAtRandomIntent'(this: alexa.Handler<any>): void;
+    'GetOnePhraseByTopicIntent'(this: alexa.Handler<any>): void;
+    'GetTopicsListIntent'(this: alexa.Handler<any>): void;
+}
+
+export const handlers: RequiredHandlers & CustomHandlers & alexa.Handlers<any> = {
     'LaunchRequest'(this: alexa.Handler<any>): void {
         const responseText: string = `
             Welcome to The George Schwartz Lexicon, where ${variations.george()}'s ${variations.sayings()} are just a voice command away.
@@ -46,6 +61,24 @@ export const handlers: alexa.Handlers<any> = {
         this.emit(':tell', responseText);
     },
 
+    'GetAllPhrasesByTopicIntent'(this: alexa.Handler<any>): void {
+        const intentRequest = this.event.request as alexa.IntentRequest;
+        const topicSlot: alexa.SlotValue = topics.getSlotFromIntentRequestOrThrow(intentRequest);
+        const topicId: topics.TopicId | undefined = topics.getTopicIdFromSlot(topicSlot);
+
+        let responseText: string;
+        if (topicId) {
+            const phrasesArray: Array<Readonly<phrases.Phrase>> = phrases.getAllWithTopicIdOrThrow(topicId, 'sorted');
+            responseText = `I found ${phrasesArray.length} ${variations.sayingOrSayings(phrasesArray.length)} under the topic "${topics.getOneFriendlyText(topicId)}": `;
+            responseText += utils.generateListText(phrasesArray.map((phrase: phrases.Phrase) => phrases.generateResponseText(phrase, false)));
+        } else {
+            responseText = generateUnrecognizedTopicResponseText(topicSlot);
+        }
+
+        console.log(responseText);
+        this.emit(':tell', responseText);
+    },
+
     'GetOnePhraseAtRandomIntent'(this: alexa.Handler<any>): void {
         const phrase: phrases.Phrase = phrases.getOneAtRandom();
 
@@ -65,24 +98,6 @@ export const handlers: alexa.Handlers<any> = {
         if (topicId) {
             const phrasesArray: Array<Readonly<phrases.Phrase>> = phrases.getAllWithTopicIdOrThrow(topicId, 'shuffled');
             responseText = variations.addPrologueAndEpilogue(phrases.generateResponseText(phrasesArray[0], true));
-        } else {
-            responseText = generateUnrecognizedTopicResponseText(topicSlot);
-        }
-
-        console.log(responseText);
-        this.emit(':tell', responseText);
-    },
-
-    'GetAllPhrasesByTopicIntent'(this: alexa.Handler<any>): void {
-        const intentRequest = this.event.request as alexa.IntentRequest;
-        const topicSlot: alexa.SlotValue = topics.getSlotFromIntentRequestOrThrow(intentRequest);
-        const topicId: topics.TopicId | undefined = topics.getTopicIdFromSlot(topicSlot);
-
-        let responseText: string;
-        if (topicId) {
-            const phrasesArray: Array<Readonly<phrases.Phrase>> = phrases.getAllWithTopicIdOrThrow(topicId, 'sorted');
-            responseText = `I found ${phrasesArray.length} ${variations.sayingOrSayings(phrasesArray.length)} under the topic "${topics.getOneFriendlyText(topicId)}": `;
-            responseText += utils.generateListText(phrasesArray.map((phrase: phrases.Phrase) => phrases.generateResponseText(phrase, false)));
         } else {
             responseText = generateUnrecognizedTopicResponseText(topicSlot);
         }

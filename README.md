@@ -1,12 +1,12 @@
-# The George Schwartz Lexicon Alexa Skill
+# The George Schwartz Lexicon Alexa Skill Lambda
 
 ## TODOs
 
 * ~~Add an intent to list all phrases under a topic~~
+* Add more utterances (use an utterance generator; include "find" and "what George would say")
 * Save the IDs of phrases recently sent to the user and avoid repeating them
 * Favor phrases containing the actual spoken word (or variations of it)
 * Add "with/without explanation" intents
-* Add more utterances that include "find" and "what George would say"
 * Add typings for slot resolutions. Here's a JSON example:
 
 ```json

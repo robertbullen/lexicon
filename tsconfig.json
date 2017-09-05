@@ -54,6 +54,7 @@
   },
   "include": [
     "src/typings/*.d.ts",
-    "index.ts"
+    "index.ts",
+    "utternances.ts"
   ]
 }

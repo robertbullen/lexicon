@@ -1,21 +1,23 @@
 {
-  "name": "grandpa-george",
+  "name": "lexicon-lambda",
   "version": "1.0.0",
-  "description": "The George Schwartz Lexicon Alexa Skill",
+  "description": "The George Schwartz Lexicon Alexa Skill Lambda",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "utterances": "tsc --outDir dist/utterances utterances.ts && node ./dist/utterances/utterances.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "alexa-sdk": "latest",
-    "aws-lambda-typescript": "latest",
     "deep-freeze": "latest",
     "shuffle-array": "latest"
   },
   "devDependencies": {
-    "@types/alexa-sdk": "latest"
+    "@types/alexa-sdk": "latest",
+    "aws-lambda-typescript": "latest",
+    "intent-utterance-generator": "latest"
   },
   "readme": "README.md",
   "repository": {
