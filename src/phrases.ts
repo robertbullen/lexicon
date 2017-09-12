@@ -37,7 +37,7 @@ export function getAllWithTopicIdOrThrow(topicId: topics.TopicId, order: 'shuffl
 }
 
 export function generateResponseText(phrase: Phrase, explain: boolean): string {
-    const responseText: string = explain
+    const responseText: string = explain && phrase.explanation
         ? `"${phrase.phrase}" ${phrase.explanation}`
         : `"${phrase.phrase}"`;
     return responseText.replace(/George/g, variations.george());

@@ -49,7 +49,7 @@ export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     {
         id: '65bff28e-0d26-4dbd-b69c-5ca96ac5d555',
         phrase: 'Outlaws!',
-        explanation: 'This is what George called his inlaws.',
+        explanation: 'This is what George called his in-laws.',
         topicIds: [TopicId.family, TopicId.nicknames]
     },
     {
@@ -80,7 +80,7 @@ export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     {
         id: '8f7f51de-9cf4-4151-b0f2-bcdba30e6ccd',
         phrase: 'Relatives are like fish, they stink after three days.',
-        explanation: "This was George's way of expressing how the everpresence of visiting relatives starts to wear thin after a while.",
+        explanation: "This was George's way of expressing how ever-present visiting relatives start to wear thin after a while.",
         topicIds: [TopicId.animals, TopicId.family]
     },
     {
@@ -139,7 +139,7 @@ export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     },
     {
         id: '2b79b822-53a2-49f5-897f-46322cd24410',
-        phrase: 'Labation.',
+        phrase: 'Libation.',
         explanation: 'A libation is an alcoholic beverage.',
         topicIds: [TopicId.food, TopicId.words]
     },
@@ -154,14 +154,64 @@ export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
         phrase: 'Davenport.',
         explanation: 'A davenport is a large sofa.',
         topicIds: [TopicId.words]
-    }
+    },
+    {
+        id: '44fd3022-59ef-4ecf-8638-4dd7f7806a1d',
+        phrase: 'Like shit through a tin horn.',
+        explanation: 'George used this gem when talking about going through his nose dressing supplies rapidly.',
+        topicIds: [TopicId.health, TopicId.similes]
+    },
+    {
+        id: '88665bbf-5cd6-435f-8e6e-983f566e09e2',
+        phrase: 'Busier than a one armed paper hanger doing the St. Vitus dance.',
+        explanation: '',
+        topicIds: [TopicId.similes, TopicId.work]
+    },
+    {
+        id: '47e98219-73b3-4cd2-b357-712429b833e5',
+        phrase: 'Cross as ten sticks.',
+        explanation: '',
+        topicIds: [TopicId.similes]
+    },
+    {
+        id: '90a3a490-1a97-444b-ae7f-d3ffe382cfb8',
+        phrase: 'You men are slower than fog off a ship.',
+        explanation: 'George attributes this phrase to a Fort Benning Sergeant speaking to his soldiers. An Internet '
+            + 'search turned up no references, save for a few occurrences of "slower than smoke off of (a cold) shit" '
+            + 'with no attributions. This may be one situation where George beats Google!',
+        topicIds: [TopicId.similes, TopicId.war]
+    },
+    {
+        id: 'd56bf6c5-82a8-456b-969b-08b78ce4c643',
+        phrase: 'Any port in a storm.',
+        explanation: '',
+        topicIds: [TopicId.weather]
+    },
+    {
+        id: '0ed2b670-aa29-4074-a111-b604f58e2aea',
+        phrase: 'God willing and the river don’t rise.',
+        explanation: '',
+        topicIds: [TopicId.weather]
+    },
+    {
+        id: '501f9353-483d-45e1-8653-3ee5d11cfb97',
+        phrase: 'A rising tide floats all boats.',
+        explanation: '',
+        topicIds: [TopicId.weather]
+    },
+    {
+        id: 'cb269960-3895-48bb-81a5-037c02e88077',
+        phrase: 'The air is close.',
+        explanation: 'This was an expression for high humidity.',
+        topicIds: [TopicId.weather]
+    },
     /*
     {
         id: '',
         phrase: '',
         explanation: '',
         topicIds: [TopicId.]
-    }
+    },
 
 “I’m suffering from a case of ‘Beckyitis.’”
 (When George is missing or

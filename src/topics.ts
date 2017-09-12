@@ -9,6 +9,10 @@ export enum TopicId {
     food = 'Food_and_Drink',
     health = 'Health',
     nicknames = 'Nicknames',
+    // religion = 'Religion',
+    similes = 'Similes',
+    war = 'War_and_Service',
+    weather = 'Weather',
     words = 'Words_and_Terms',
     work = 'Work_and_Career'
 }
