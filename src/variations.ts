@@ -1,7 +1,7 @@
 import * as deepFreeze   from 'deep-freeze';
 import * as shuffleArray from 'shuffle-array';
 
-const georgeVariations: ReadonlyArray<string> = deepFreeze([
+export const georgeVariations: ReadonlyArray<string> = deepFreeze([
     'George',
     'Grandpa',
     'Grandpa George'
