@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "utterances": "tsc --outDir dist/utterances utterances.ts && node ./dist/utterances/utterances.js"
+    "generate-interaction-model": "tsc --outDir dist/interaction-model src/model/generator.ts && node dist/interaction-model/model/generator.js dist/interaction-model.json && rm -fr dist/interaction-model"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +18,8 @@
     "@types/alexa-sdk": "latest",
     "@types/node": "latest",
     "aws-lambda-typescript": "latest",
-    "intent-utterance-generator": "latest"
+    "intent-utterance-expander": "latest",
+    "typescript": "latest"
   },
   "readme": "README.md",
   "repository": {

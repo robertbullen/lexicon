@@ -1,6 +1,8 @@
-declare module 'intent-utterance-generator' {
+// This file is no longer needed but is kept for posterity.
 
-    function generator(intents: Record<string, string | string[]>): Buffer;
-
-    export = generator;
-}
+// declare module 'intent-utterance-generator' {
+//
+//     function intentUtteranceGenerator(intents: Record<string, string | string[]>): Buffer;
+//
+//     export = intentUtteranceGenerator;
+// }

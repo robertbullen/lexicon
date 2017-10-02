@@ -9,6 +9,8 @@
     "import-spacing": false,
     "object-literal-sort-keys": false,
     "max-line-length": false,
-    "interface-name": false
+    "interface-name": false,
+    "member-ordering": false,
+    "object-literal-key-quotes": [true, "as-needed"]
   }
 }

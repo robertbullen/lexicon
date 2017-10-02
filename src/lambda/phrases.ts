@@ -1,8 +1,9 @@
 import * as shuffleArray from 'shuffle-array';
 
-import * as lexicon    from './lexicon';
-import * as topics     from './topics';
-import * as variations from './variations';
+import * as topics     from '../common/topics';
+import * as variations from '../common/variations';
+
+import * as lexicon from './lexicon';
 
 export interface Phrase {
     id: string;
@@ -40,5 +41,5 @@ export function generateResponseText(phrase: Phrase, explain: boolean): string {
     const responseText: string = explain && phrase.explanation
         ? `"${phrase.phrase}" ${phrase.explanation}`
         : `"${phrase.phrase}"`;
-    return responseText.replace(/George/g, variations.george());
+    return responseText.replace(/George/g, variations.george.pick());
 }

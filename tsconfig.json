@@ -55,6 +55,6 @@
   "include": [
     "src/typings/*.d.ts",
     "index.ts",
-    "utternances.ts"
+    "src/model/generator.ts"
   ]
 }

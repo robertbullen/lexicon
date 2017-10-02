@@ -1,11 +1,15 @@
 import * as alexa  from 'alexa-sdk';
 import * as lambda from 'aws-lambda';
 
-import * as handlers from './src/handlers';
+import * as handlers from './src/lambda/handlers';
+
+// The Context type definitions of the two libraries used in this project don't quite agree. Intersecting them quiets
+// the compiler.
+type Context = lambda.Context & alexa.Context;
 
 const handler: lambda.Handler = (
     event: alexa.RequestBody<any>,
-    context: lambda.Context & alexa.Context,
+    context: Context,
     _callback: lambda.Callback // tslint:disable-line:variable-name
 ) => {
     console.log(JSON.stringify(event, null, 2));

@@ -3,7 +3,9 @@
 ## TODOs
 
 * ~~Add an intent to list all phrases under a topic~~
-* Add more utterances (use an utterance generator; include "find" and "what George would say")
+* ~~Add more utterances (use an utterance expander; include "find" and "what George would say")~~
+* Rename "definitions" to "schema"
+* Combine some of the content in `commentary.ts` and `variations.ts`?
 * Save the IDs of phrases recently sent to the user and avoid repeating them
 * Favor phrases containing the actual spoken word (or variations of it)
 * Add "with/without explanation" intents

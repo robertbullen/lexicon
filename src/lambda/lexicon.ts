@@ -1,7 +1,8 @@
 import * as deepFreeze   from 'deep-freeze';
 
+import {TopicId} from '../common/topics';
+
 import {Phrase}  from './phrases';
-import {TopicId} from './topics';
 
 export const phrases: ReadonlyArray<Readonly<Phrase>> = deepFreeze([
     {
